@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      min-width: 600px;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      background: #f5f5f5;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .header {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+      border-bottom: 3px solid #4CAF50;
+      padding-bottom: 10px;
+    }
+    
+    .section {
+      margin-bottom: 25px;
+      padding: 15px;
+      background: #f9f9f9;
+      border-radius: 6px;
+      border: 1px solid #e0e0e0;
+    }
+    
+    .section-title {
+      font-weight: bold;
+      margin-bottom: 12px;
+      color: #555;
+      font-size: 15px;
+    }
+    
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+    
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 24px;
+      background: #ccc;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .toggle-switch.active {
+      background: #4CAF50;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+    
+    .toggle-switch.active .toggle-slider {
+      transform: translateX(26px);
+    }
+    
+    .input-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+    
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #4CAF50;
+    }
+    
+    .rule-input {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    
+    .rule-input input {
+      flex: 1;
+    }
+    
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      background: #4CAF50;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    
+    button:hover {
+      background: #45a049;
+    }
+    
+    button:active {
+      transform: scale(0.98);
+    }
+    
+    .btn-danger {
+      background: #f44336;
+    }
+    
+    .btn-danger:hover {
+      background: #da190b;
+    }
+    
+    .btn-secondary {
+      background: #2196F3;
+    }
+    
+    .btn-secondary:hover {
+      background: #0b7dda;
+    }
+    
+    .btn-export {
+      background: #FF9800;
+    }
+    
+    .btn-export:hover {
+      background: #F57C00;
+    }
+    
+    .btn-import {
+      background: #9C27B0;
+    }
+    
+    .btn-import:hover {
+      background: #7B1FA2;
+    }
+    
+    .rules-list {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background: white;
+    }
+    
+    .rule-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      border-bottom: 1px solid #eee;
+      font-family: monospace;
+      font-size: 12px;
+    }
+    
+    .rule-item:last-child {
+      border-bottom: none;
+    }
+    
+    .rule-text {
+      flex: 1;
+      color: #333;
+      word-break: break-all;
+    }
+    
+    .rule-delete {
+      background: #f44336;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 11px;
+      margin-left: 8px;
+    }
+    
+    .rule-delete:hover {
+      background: #da190b;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 20px;
+      color: #999;
+      font-style: italic;
+    }
+    
+    .help-text {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+      font-style: italic;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .status-message {
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+      display: none;
+    }
+    
+    .status-message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      display: block;
+    }
+    
+    .status-message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      display: block;
+    }
+    
+    .examples {
+      background: #e3f2fd;
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 10px;
+      font-size: 12px;
+    }
+    
+    .examples strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #1976d2;
+    }
+    
+    .examples code {
+      background: white;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">⚙️ 视频速度控制器 - 高级设置</div>
+    
+    <div class="section">
+      <div class="section-title">全局设置</div>
+      <div class="toggle-container">
+        <span>启用全局功能</span>
+        <div class="toggle-switch" id="globalToggle">
+          <div class="toggle-slider"></div>
+        </div>
+      </div>
+      
+      <div class="input-group">
+        <label for="defaultSpeed">默认速度 (0.25 - 16.0)</label>
+        <input type="number" id="defaultSpeed" min="0.25" max="16.0" step="0.25" value="1.0">
+        <div class="help-text">新打开的视频将使用此速度</div>
+      </div>
+      
+      <div class="input-group">
+        <label for="presetSpeed">预设速度 (0.25 - 16.0)</label>
+        <input type="number" id="presetSpeed" min="0.25" max="16.0" step="0.25" value="2.0">
+        <div class="help-text">快捷键 Ctrl+Shift+Space (Windows/Linux) 或 Command+Shift+Space (Mac) 切换到此速度，再次按下切换回 1.0x</div>
+      </div>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">生效规则 (Include Rules)</div>
+      <div class="help-text">如果设置，只有匹配这些规则的网站才会生效</div>
+      
+      <div class="rule-input">
+        <input type="text" id="includeRuleInput" placeholder="输入正则表达式，如: youtube\.com">
+        <button id="addIncludeRule">添加</button>
+      </div>
+      
+      <div class="rules-list" id="includeRulesList">
+        <div class="empty-state">暂无生效规则</div>
+      </div>
+      
+      <div class="examples">
+        <strong>示例：</strong>
+        <code>youtube\.com</code> - 匹配 YouTube<br>
+        <code>.*\.bilibili\.com</code> - 匹配所有 bilibili 子域名<br>
+        <code>netflix\.com|prime\.video</code> - 匹配多个网站
+      </div>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">排除规则 (Exclude Rules)</div>
+      <div class="help-text">匹配这些规则的网站将不会生效</div>
+      
+      <div class="rule-input">
+        <input type="text" id="excludeRuleInput" placeholder="输入正则表达式，如: github\.com">
+        <button id="addExcludeRule">添加</button>
+      </div>
+      
+      <div class="rules-list" id="excludeRulesList">
+        <div class="empty-state">暂无排除规则</div>
+      </div>
+      
+      <div class="examples">
+        <strong>示例：</strong>
+        <code>github\.com</code> - 排除 GitHub<br>
+        <code>localhost|127\.0\.0\.1</code> - 排除本地开发<br>
+        <code>docs\.|support\.</code> - 排除文档和支持页面
+      </div>
+    </div>
+    
+    <div class="button-group">
+      <button id="shortcutsBtn" class="btn-secondary">⌨️ 快捷键配置</button>
+      <button id="saveBtn" class="btn-secondary">保存设置</button>
+      <button id="exportBtn" class="btn-export">📤 导出设置</button>
+      <button id="importBtn" class="btn-import">📥 导入设置</button>
+      <button id="resetBtn" class="btn-danger">重置所有</button>
+    </div>
+    
+    <div id="statusMessage" class="status-message"></div>
+  </div>
+
+  <!-- 隐藏的文件输入用于导入 -->
+  <input type="file" id="importFileInput" accept=".json" style="display: none;">
+
+  <script src="options.js"></script>
+</body>
+</html>

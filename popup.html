@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      width: 320px;
+      padding: 15px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+    
+    .header {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #333;
+      border-bottom: 2px solid #4CAF50;
+      padding-bottom: 8px;
+    }
+    
+    .section {
+      margin-bottom: 15px;
+    }
+    
+    .section-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #555;
+    }
+    
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 24px;
+      background: #ccc;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .toggle-switch.active {
+      background: #4CAF50;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+    
+    .toggle-switch.active .toggle-slider {
+      transform: translateX(26px);
+    }
+    
+    .speed-display {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: #4CAF50;
+      margin: 10px 0;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    
+    button {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 4px;
+      background: #4CAF50;
+      color: white;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.2s;
+    }
+    
+    button:hover {
+      background: #45a049;
+    }
+    
+    button:active {
+      transform: scale(0.98);
+    }
+    
+    .secondary-btn {
+      background: #2196F3;
+    }
+    
+    .secondary-btn:hover {
+      background: #0b7dda;
+    }
+    
+    .info {
+      font-size: 12px;
+      color: #666;
+      margin-top: 10px;
+      text-align: center;
+    }
+    
+    .keyboard-hint {
+      background: #f0f0f0;
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      color: #555;
+      margin-top: 8px;
+    }
+    
+    .status {
+      padding: 6px;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    
+    .status.enabled {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .status.disabled {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">🎬 视频速度控制器</div>
+  
+  <div id="statusIndicator"></div>
+  
+  <div class="section">
+    <div class="toggle-container">
+      <span><strong>全局开关</strong></span>
+      <div class="toggle-switch" id="globalToggle">
+        <div class="toggle-slider"></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="section-title">当前速度</div>
+    <div class="speed-display" id="speedDisplay">1.00x</div>
+    <div class="button-group">
+      <button id="decreaseBtn">- 降低</button>
+      <button id="increaseBtn">+ 提高</button>
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="section-title">预设速度切换</div>
+    <div class="speed-display" id="presetDisplay">2.00x</div>
+    <div class="button-group">
+      <button id="presetBtn">切换预设</button>
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="button-group">
+      <button class="secondary-btn" id="resetBtn">重置速度</button>
+      <button class="secondary-btn" id="optionsBtn">规则设置</button>
+      <button class="secondary-btn" id="shortcutsBtn">快捷键</button>
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="section-title">设置管理</div>
+    <div class="button-group">
+      <button class="secondary-btn" id="exportBtn" style="background: #FF9800;">📤 导出</button>
+      <button class="secondary-btn" id="importBtn" style="background: #9C27B0;">📥 导入</button>
+    </div>
+  </div>
+  
+  <div class="keyboard-hint">
+    ⌨️ 快捷键：<br>
+    Ctrl+Shift+→ 提高速度<br>
+    Ctrl+Shift+← 降低速度
+  </div>
+  
+  <div class="info">
+    当前页面: <span id="currentUrl">检测中...</span>
+  </div>
+
+  <!-- 隐藏的文件输入用于导入 -->
+  <input type="file" id="importFileInput" accept=".json" style="display: none;">
+  
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "video-speed-controller",
+  "version": "1.0.0",
+  "description": "自定义网页视频速度 - 支持全局开关和网址规则",
+  "main": "manifest.json",
+  "scripts": {
+    "test": "echo \"打开 test.html 进行功能测试\" && start test.html"
+  },
+  "keywords": [
+    "chrome-extension",
+    "video",
+    "speed",
+    "controller",
+    "browser-extension"
+  ],
+  "author": "louisdwu",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/louisdwu/video-speed-controller"
+  },
+  "dependencies": {
+    "canvas": "^3.2.0"
+  }
+}
