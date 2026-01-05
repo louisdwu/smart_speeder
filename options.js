@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   let settings = {
     globalEnabled: true,
+    hideFloatingBall: false,
     excludeRules: [],
     includeRules: [],
     defaultSpeed: 1.0,
@@ -32,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Ensure all required properties exist
         settings = {
           globalEnabled: response.globalEnabled !== false,
+          hideFloatingBall: response.hideFloatingBall || false,
           excludeRules: Array.isArray(response.excludeRules) ? response.excludeRules : [],
           includeRules: Array.isArray(response.includeRules) ? response.includeRules : [],
           defaultSpeed: response.defaultSpeed || 1.0,
@@ -42,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // If no response, use default settings
         settings = {
           globalEnabled: true,
+          hideFloatingBall: false,
           excludeRules: [],
           includeRules: [],
           defaultSpeed: 1.0,
@@ -59,6 +62,14 @@ document.addEventListener('DOMContentLoaded', () => {
       globalToggle.classList.add('active');
     } else {
       globalToggle.classList.remove('active');
+    }
+    
+    // Update hide floating ball toggle
+    const hideFloatingBallToggle = document.getElementById('hideFloatingBallToggle');
+    if (settings.hideFloatingBall) {
+      hideFloatingBallToggle.classList.add('active');
+    } else {
+      hideFloatingBallToggle.classList.remove('active');
     }
     
     // Update default speed
@@ -216,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     settings = {
       globalEnabled: true,
+      hideFloatingBall: false,
       excludeRules: [],
       includeRules: [],
       defaultSpeed: 1.0,
@@ -408,6 +420,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Event listeners
   globalToggle.addEventListener('click', () => {
     settings.globalEnabled = !settings.globalEnabled;
+    updateUI();
+  });
+  
+  const hideFloatingBallToggle = document.getElementById('hideFloatingBallToggle');
+  hideFloatingBallToggle.addEventListener('click', () => {
+    settings.hideFloatingBall = !settings.hideFloatingBall;
     updateUI();
   });
   

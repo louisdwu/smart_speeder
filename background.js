@@ -28,9 +28,10 @@ function loadShortcuts() {
 // Listen for messages from popup/options to update settings
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'getSettings') {
-    chrome.storage.sync.get(['globalEnabled', 'excludeRules', 'includeRules', 'defaultSpeed', 'presetSpeed'], (result) => {
+    chrome.storage.sync.get(['globalEnabled', 'hideFloatingBall', 'excludeRules', 'includeRules', 'defaultSpeed', 'presetSpeed'], (result) => {
       sendResponse({
         globalEnabled: result.globalEnabled !== false, // default true
+        hideFloatingBall: result.hideFloatingBall || false,
         excludeRules: result.excludeRules || [],
         includeRules: result.includeRules || [],
         defaultSpeed: result.defaultSpeed || 1.0,

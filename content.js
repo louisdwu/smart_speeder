@@ -1,6 +1,7 @@
 // Content script for video speed control
 let settings = {
   globalEnabled: true,
+  hideFloatingBall: false,
   excludeRules: [],
   includeRules: [],
   defaultSpeed: 1.0,
@@ -18,6 +19,7 @@ function loadSettings() {
       // Ensure all required properties exist
       settings = {
         globalEnabled: response.globalEnabled !== false,
+        hideFloatingBall: response.hideFloatingBall || false,
         excludeRules: Array.isArray(response.excludeRules) ? response.excludeRules : [],
         includeRules: Array.isArray(response.includeRules) ? response.includeRules : [],
         defaultSpeed: response.defaultSpeed || 1.0,
@@ -29,6 +31,7 @@ function loadSettings() {
       // If no response, use default settings
       settings = {
         globalEnabled: true,
+        hideFloatingBall: false,
         excludeRules: [],
         includeRules: [],
         defaultSpeed: 1.0,
@@ -302,8 +305,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     // Ensure floating ball exists after reload
     setTimeout(() => {
       const ball = document.getElementById('video-speed-float-ball');
-      if (!ball && shouldApplySpeed()) {
+      if (!ball && shouldApplySpeed() && !settings.hideFloatingBall) {
         createFloatingBall();
+      }
+      // Remove ball if it should be hidden
+      if (settings.hideFloatingBall && ball) {
+        ball.remove();
       }
       updateFloatingBall();
     }, 500);
@@ -319,6 +326,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 // Create floating speed indicator ball
 function createFloatingBall() {
+  // Don't create ball if it should be hidden
+  if (settings.hideFloatingBall) {
+    return null;
+  }
+  
   // Remove existing ball if any
   const existingBall = document.getElementById('video-speed-float-ball');
   if (existingBall) existingBall.remove();
@@ -990,6 +1002,12 @@ function updateFloatingBall() {
       display.textContent = `${currentSpeed.toFixed(2)}x`;
     }
     
+    // Check if should hide floating ball
+    if (settings.hideFloatingBall) {
+      ball.style.display = 'none';
+      return;
+    }
+    
     // Show/hide based on whether speed should be applied
     if (shouldApplySpeed()) {
       ball.style.display = 'flex';
@@ -1006,7 +1024,7 @@ loadCustomShortcuts(); // 加载自定义快捷键
 
 // Create floating ball after a short delay
 setTimeout(() => {
-  if (shouldApplySpeed()) {
+  if (shouldApplySpeed() && !settings.hideFloatingBall) {
     createFloatingBall();
   }
 }, 1000);
