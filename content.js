@@ -993,6 +993,16 @@ function setupMenuEventListeners() {
   }
 }
 
+// Check if any element is in fullscreen mode
+function isFullscreen() {
+  return !!(
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement ||
+    document.msFullscreenElement
+  );
+}
+
 // Update floating ball display
 function updateFloatingBall() {
   const ball = document.getElementById('video-speed-float-ball');
@@ -1004,6 +1014,12 @@ function updateFloatingBall() {
     
     // Check if should hide floating ball
     if (settings.hideFloatingBall) {
+      ball.style.display = 'none';
+      return;
+    }
+    
+    // Hide ball if in fullscreen mode
+    if (isFullscreen()) {
       ball.style.display = 'none';
       return;
     }
@@ -1038,6 +1054,12 @@ document.addEventListener('visibilitychange', () => {
     }, 500);
   }
 });
+
+// Handle fullscreen change - hide/show floating ball
+document.addEventListener('fullscreenchange', updateFloatingBall);
+document.addEventListener('webkitfullscreenchange', updateFloatingBall);
+document.addEventListener('mozfullscreenchange', updateFloatingBall);
+document.addEventListener('MSFullscreenChange', updateFloatingBall);
 
 // Handle dynamic video elements (for sites like YouTube)
 setInterval(() => {
